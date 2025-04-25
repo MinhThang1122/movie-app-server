@@ -37,6 +37,7 @@ const movieSchema = new mongoose.Schema({
   category: String,
   date: String,
   description: String,
+  language: String,
   image: String,
 });
 const Movie = mongoose.model("Movie", movieSchema, "movie");
@@ -50,7 +51,7 @@ const User = mongoose.model("User", userSchema, "user");
 app.put("/movies-update/:id", upload.single("image"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, category, date, description } = req.body;
+    const { name, category, date, description, language } = req.body;
     let imagePath = req.body.image; // Nếu không upload ảnh mới, giữ ảnh cũ
 
     if (req.file) {
@@ -59,7 +60,7 @@ app.put("/movies-update/:id", upload.single("image"), async (req, res) => {
 
     const updatedMovie = await Movie.findByIdAndUpdate(
       id,
-      { name, category, date, description, image: imagePath },
+      { name, category, date, description,language, image: imagePath },
       { new: true }
     );
 
@@ -86,7 +87,7 @@ app.get("/movies", async (req, res) => {
  
 app.post("/movies-add", upload.single("image"), async (req, res) => {
   try {
-    const { id, name, category, date, description } = req.body;
+    const { id, name, category, date, description, language } = req.body;
 
     let imagePath = "";
     if (req.file) {
@@ -99,6 +100,7 @@ app.post("/movies-add", upload.single("image"), async (req, res) => {
       category,
       date,
       description,
+      language,
       image: imagePath,
     });
 
